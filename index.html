@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try and Get the Ball</title>
+    <style>
+        #image {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="image" src="image.jpg" alt="Moving Image"
+        height="100"
+        width="50">
+
+    <script>
+        var image = document.getElementById("image");
+
+        document.addEventListener("mousemove", function (event) {
+            var mouseX = event.clientX;
+            var mouseY = event.clientY;
+
+            var imageX = image.offsetLeft + (image.width / 2);
+            var imageY = image.offsetTop + (image.height / 2);
+
+            var deltaX = imageX - mouseX;
+            var deltaY = imageY - mouseY;
+
+            var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            var threshold = 100; // Adjust this value to change the sensitivity
+
+            if (distance < threshold) {
+                var angle = Math.atan2(deltaY, deltaX);
+                var speed = 10;
+
+                var moveX = Math.cos(angle) * speed;
+                var moveY = Math.sin(angle) * speed;
+
+                var newImageX = imageX + moveX - (image.width / 2);
+                var newImageY = imageY + moveY - (image.height / 2);
+
+                var maxX = window.innerWidth - image.width;
+                var maxY = window.innerHeight - image.height;
+
+                // Restrict the image's movement within the page boundaries
+                newImageX = Math.max(0, Math.min(newImageX, maxX));
+                newImageY = Math.max(0, Math.min(newImageY, maxY));
+
+                image.style.left = newImageX + "px";
+                image.style.top = newImageY + "px";
+            }
+        });
+    </script>
+</body>
+
+</html>
